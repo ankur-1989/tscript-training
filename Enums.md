@@ -129,6 +129,48 @@ let directions = [
 ];
 ```
 
+In normal enums, at runtime, it will lookup for Direction and Up. To get the performance boost we use const
+
+```js
+const enum Tristate {
+    False,
+    True,
+    Unknown
+}
+
+var lie = Tristate.False;
+```
+
+generates JS
+
+```js
+var lie = 0
+```
+i.e the compiler:
+
+* Inlines any usages of the enum (0 instead of Tristate.False).
+* Does not generate any JavaScript for the enum definition (there is no Tristate variable at runtime) as its usages are inlined.
+
+Inlining has obvious performance benefits. The fact that there is no Tristate variable at runtime is simply the compiler helping you out by not generating JavaScript that is not actually used at runtime. However, you might want the compiler to still generate the JavaScript version of the enum definition for stuff like number to string or string to number lookups as we saw. In this case you can use the compiler flag --preserveConstEnums and it will still generate the var Tristate definition so that you can use Tristate["False"] or Tristate[0] manually at runtime if you want. This does not impact inlining in any way.
+
+## Enums are open ended
+
+You can split (and extend) an enum definition across multiple files. For example below we have split the definition for Color into two blocks.
+
+```js
+enum Color {
+    Red,
+    Green,
+    Blue
+}
+
+enum Color {
+    DarkRed = 3,
+    DarkGreen,
+    DarkBlue
+}
+```
+
 ## Ambient Enums
 
 Ambient enums are used to describe the shape of already existing enum types.
@@ -141,6 +183,43 @@ declare enum Enum {
 }
 ```
 
+## Number Enums as flags
+
+```js
+enum AnimalFlags {    
+    None = 0,    
+    HasClaws = 1 << 0,    
+    CanFly = 1 << 1
+}
+type Animal = { flags: AnimalFlags}
+
+function printAnimalAbilities(animal: Animal) {    
+    var animalFlags = animal.flags;    
+    if (animalFlags & AnimalFlags.HasClaws) {        
+        console.log('animal has claws');    
+    }    
+    if (animalFlags & AnimalFlags.CanFly) {        
+        console.log('animal can fly');    
+    }    
+    if (animalFlags == AnimalFlags.None) {        
+        console.log('nothing');    
+    }
+}
+let animal: Animal = { flags: AnimalFlags.None };
+printAnimalAbilities(animal); // nothing
+animal.flags |= AnimalFlags.HasClaws;
+printAnimalAbilities(animal); // animal has claws
+animal.flags &= ~AnimalFlags.HasClaws;
+printAnimalAbilities(animal); // nothing
+animal.flags |= AnimalFlags.HasClaws | AnimalFlags.CanFly;
+printAnimalAbilities(animal); // animal has claws, animal can fly
+```
+
+Here:
+
+* we used |= to add flags
+* a combination of &= and ~ to clear a flag
+* | to combine flags
 
 ### Useful links on the topic
 
