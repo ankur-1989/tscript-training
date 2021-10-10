@@ -220,9 +220,9 @@ printAnimalAbilities(animal); // animal has claws, animal can fly
 
 Here:
 
-* we used |= to add flags
-* a combination of &= and ~ to clear a flag
-* | to combine flags
+* we used ```|=``` to add flags
+* a combination of ```&=``` and ```~``` to clear a flag
+* ```|``` to combine flags
 
 ### Useful links on the topic
 
