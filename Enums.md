@@ -44,6 +44,7 @@ enum E {
   X,
 }
 ```
+
 ### Example -  Constant Enum Members
 
 ```js
@@ -57,6 +58,7 @@ enum FileAccess {
   G = "123".length,
 }
 ```
+
 ## Enum Member Types
 
 ```js
@@ -98,7 +100,7 @@ function f(obj: { X: number }) {
 f(E);
 ```
 
-## Reverse mappings 
+## Reverse mappings
 
 ```js
 enum Enum {
@@ -146,6 +148,7 @@ generates JS
 ```js
 var lie = 0
 ```
+
 i.e the compiler:
 
 * Inlines any usages of the enum (0 instead of Tristate.False).
