@@ -1,4 +1,4 @@
-## TypeScript Topics
+## TypeScript
 
 
 
