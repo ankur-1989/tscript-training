@@ -108,3 +108,11 @@ namespace Validation {
   }
 }
 ```
+
+Internal modules are really namespaces, which is model that is most often applied in the browser. There's a big need for namespaces in a web application
+since everything naturally gets loaded into the window scope. The window scope can turn into a massive pile of variables if you don't manage your scripts
+carefully. This is where internal modules or namespaces really shine.
+
+On the other hand if you're building a NodeJS application you have to work with modules in the traditional sense. Every file is its own module and
+there is no global scope to worry about. When you import a module you automatically assign it to a well known variable. It's logical to use external modules for this scenario
+[Link](https://fizzylogic.nl/2016/02/07/typescript-internal-vs-external-modules/)
